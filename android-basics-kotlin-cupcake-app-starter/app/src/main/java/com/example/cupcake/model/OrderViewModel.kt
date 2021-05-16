@@ -11,7 +11,7 @@ import java.util.*
 private const val PRICE_PER_CUPCAKE = 2.00
 private const val EXTRA_CHARGE_PRICE_FOR_SAME_DAY_PICKUP = 3.00
 
-class OrderViewModel: ViewModel(){
+class OrderViewModel : ViewModel() {
 
     private val _quantity = MutableLiveData<Int>()
     val quantity: LiveData<Int> = _quantity
@@ -23,7 +23,7 @@ class OrderViewModel: ViewModel(){
     val date: LiveData<String> = _date
 
     private val _price = MutableLiveData<Double>()
-    val price: LiveData<String> = Transformations.map(_price){
+    val price: LiveData<String> = Transformations.map(_price) {
         NumberFormat.getCurrencyInstance().format(it)
     }
 
@@ -34,48 +34,49 @@ class OrderViewModel: ViewModel(){
     }
 
     // set quantity
-    fun setQuantity(numberCupcakes: Int){
+    fun setQuantity(numberCupcakes: Int) {
         _quantity.value = numberCupcakes
         updatePrice()
     }
 
     // set flavor
-    fun setFlavor(desiredFlavor: String){
+    fun setFlavor(desiredFlavor: String) {
         _flavor.value = desiredFlavor
     }
+
     // set date
-    fun setDate(pickUpDate: String){
+    fun setDate(pickUpDate: String) {
         _date.value = pickUpDate
         updatePrice()
     }
 
-    fun hasNoFlavorSet(): Boolean{
+    fun hasNoFlavorSet(): Boolean {
         return _flavor.value.isNullOrEmpty()
     }
 
-    private fun getPickUpOptions(): List<String>{
+    private fun getPickUpOptions(): List<String> {
         val options = mutableListOf<String>()
         val formatter = SimpleDateFormat("E MMM d", Locale.getDefault())
         val calendar = Calendar.getInstance()
 
-        repeat(4){
+        repeat(4) {
             options.add(formatter.format(calendar.time))
-            calendar.add(Calendar.DATE,1)
+            calendar.add(Calendar.DATE, 1)
         }
 
         return options
     }
 
-    fun resetOrder(){
+    fun resetOrder() {
         _quantity.value = 0
         _flavor.value = ""
         _date.value = dateOptions[0]
         _price.value = 0.0
     }
 
-    private fun updatePrice(){
+    private fun updatePrice() {
         var calculatedPrice = (quantity.value ?: 0) * PRICE_PER_CUPCAKE
-        if (dateOptions[0] == _date.value){
+        if (dateOptions[0] == _date.value) {
             calculatedPrice += EXTRA_CHARGE_PRICE_FOR_SAME_DAY_PICKUP
         }
         _price.value = calculatedPrice

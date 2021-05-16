@@ -148,8 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_between_elements"
                 android:text="@string/cancel"
-                android:onClick="@{()->summaryFragment.cancelOrder()}"
-                />
+                android:onClick="@{()->summaryFragment.cancelOrder()}" />
 
         </LinearLayout>
     </ScrollView>
